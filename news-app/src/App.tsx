@@ -1,6 +1,6 @@
 
 
-// from MATERIAL UI UNCOMMENT
+// from MATERIAL UI
 
  import { CardActionArea } from '@material-ui/core';
 
@@ -27,7 +27,6 @@ import './App.css';
 
 interface IState
 {
-  button: any,
   success: any,
   results: any
 
@@ -38,44 +37,12 @@ class App extends React.Component <{}, IState> {
   {
     super(props)
     this.state = {
-      button: this.LiterallyNothing.bind(this),
+      
       results: "",
       success: false
     }
-    this.LiterallyNothing = this.LiterallyNothing.bind(this)
-    this.doesSomething = this.doesSomething.bind(this)
-  }
-  public LiterallyNothing(country: string) 
-  {
-    const url = ['http://www.json-generator.com/api/json/get/cusiUtrUCW?indent=2', 'https://randomuser.me/api/']
-     const focused = country === "us" ? url[0] : url[1];
-    fetch(focused, {
-      headers: {
-        'Content-Type': 'text/plain',
-      },
-      method: 'GET'
     
-    }).then(res => res.json()
-  )
-    .then(
-      (result) => {
-       
-        if(!result.ok)
-        {
-          this.setState({
-            results: result,
-            success: true
-          });
-        }
-        else
-        {
-          this.setState({
-          
-            results: result,
-            success: true
-          });
-        }
-      })
+    this.CardCreator = this.CardCreator.bind(this)
   }
   public fetchNews(country: string)
   {
@@ -108,7 +75,7 @@ class App extends React.Component <{}, IState> {
       })
   }
 
-  public doesSomething()
+  public CardCreator()
   {
     // This function takes the JSON object and formats it into a Card container.
     // Since there is more than one article, we use a map() function to map each article to a container
@@ -118,7 +85,7 @@ class App extends React.Component <{}, IState> {
    
     const articleList = this.state.results[keys[0]];
     
-    const listCardFriends = articleList.map((article: any) =>
+    const listCardArticles = articleList.map((article: any) =>
       // publishedAt is the key
       <Card className = 'card' key = {article[keys[9]].toString()}>
         <CardHeader title = {article[keys[5]]} subheader = {article[keys[4]]}/ >
@@ -142,7 +109,7 @@ class App extends React.Component <{}, IState> {
           </CardActions>
       </Card>
     );
-    return listCardFriends;
+    return listCardArticles;
     
   }
 
@@ -160,9 +127,9 @@ class App extends React.Component <{}, IState> {
           <h2> Powered by NewsAPI.org </h2>
           
           <div className = "Button-drawer">
-          <Typography component = "p" variant="headline">
+          <h3>
             Please choose a Country to get Top Headlines from
-          </Typography>
+          </h3>
             <Button variant="outlined"  color="primary" onClick = {() => this.fetchNews("us")} > American News </Button>
             <Button variant="outlined"  color="primary" onClick = {() => this.fetchNews("br")} > British News </Button>  
             <Button variant="outlined"  color="primary" onClick = {() => this.fetchNews("nz")} > New Zealand News </Button>  
@@ -180,7 +147,9 @@ class App extends React.Component <{}, IState> {
           <h1> News</h1>
           </header>
           <h2> Powered by NewsAPI.org {this.state.success} </h2>
-          
+          <h3>
+            Choose a different country?
+          </h3>
          
           <div className = "Button-drawer">
             <Button variant="outlined"  color="primary" onClick = {() => this.fetchNews("us")} > American News </Button>
@@ -191,7 +160,7 @@ class App extends React.Component <{}, IState> {
           <Grid container = {true} justify = "center">
           {
             
-            this.state.results === "" ?   <LinearProgress />:  <this.doesSomething />
+            this.state.results === "" ?   <LinearProgress />:  <this.CardCreator />
            
           }
           </Grid>
@@ -201,10 +170,6 @@ class App extends React.Component <{}, IState> {
   }
   }
   
-
-
-
-
 export default App;
 
 

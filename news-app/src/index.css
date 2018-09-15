@@ -3,3 +3,15 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+#about-text
+{
+  
+  margin:0 auto;
+  color:rgb(153, 153, 153);
+  width:60%;
+  font-size:20px;
+  text-align: justify;
+  text-align-last: center;
+  -moz-text-align-last: center;
+}
