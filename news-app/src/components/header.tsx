@@ -9,7 +9,9 @@ export const Header: React.StatelessComponent<{}> = () =>
         // Navbar is a react component from react-bootstrap
         <Navbar>
             <Navbar.Header>
+                <Navbar.Brand>
                 <Link to= "/"> Alan's News </Link>
+                </Navbar.Brand>
             </Navbar.Header>
             <Nav>
                 <IndexLinkContainer to="/AboutComponent">

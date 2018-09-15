@@ -10,8 +10,8 @@
 .App-header {
   background-color: #222;
   height: 150px;
-  padding: 20px;
-  color: white;
+  padding: 10px;
+  color: rgb(92, 92, 92);
 }
 
 .App-title {
@@ -20,6 +20,38 @@
 
 .App-intro {
   font-size: large;
+}
+
+.Button-drawer > button
+{
+  margin:8px;
+  font-size:15px;
+}
+.pic 
+{
+  height:400px;
+  width: 100%;
+}
+
+.card
+{
+  max-width: 400px;
+  margin:5px;
+}
+.card > Button
+{
+  width:100%;
+}
+
+body
+{
+  background-color: #222;
+}
+
+a:hover
+{
+  color: white;
+  text-decoration: none;
 }
 
 @keyframes App-logo-spin {

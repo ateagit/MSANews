@@ -1,9 +1,28 @@
+
+
+// from MATERIAL UI UNCOMMENT
+
+ import { CardActionArea } from '@material-ui/core';
+
+ import Button from '@material-ui/core/Button'
+ 
+import Card from '@material-ui/core/Card'
+
+ import CardActions from '@material-ui/core/CardActions'
+import CardContent from '@material-ui/core/CardContent'
+import CardHeader from '@material-ui/core/CardHeader'
+import CardMedia from '@material-ui/core/CardMedia'
+
 import Grid from '@material-ui/core/Grid';
+import LinearProgress from '@material-ui/core/LinearProgress';
+ import Typography from '@material-ui/core/Typography'
+
 import * as React from 'react';
-// import { Button, ButtonToolbar } from 'react-bootstrap';
-// import Loader from 'react-loader-spinner'
+
 
 import './App.css';
+
+// import image from './css/1423500.jpg'
 
 
 interface IState
@@ -24,113 +43,164 @@ class App extends React.Component <{}, IState> {
       success: false
     }
     this.LiterallyNothing = this.LiterallyNothing.bind(this)
+    this.doesSomething = this.doesSomething.bind(this)
   }
-  public LiterallyNothing() 
+  public LiterallyNothing(country: string) 
   {
-    fetch('https://randomuser.me/api/', {
+    const url = ['http://www.json-generator.com/api/json/get/cusiUtrUCW?indent=2', 'https://randomuser.me/api/']
+     const focused = country === "us" ? url[0] : url[1];
+    fetch(focused, {
       headers: {
         'Content-Type': 'text/plain',
       },
       method: 'GET'
     
-    }).then(res => res.json())
+    }).then(res => res.json()
+  )
     .then(
       (result) => {
+       
         if(!result.ok)
         {
           this.setState({
-          
-            results: result.results,
-            success:true
+            results: result,
+            success: true
           });
         }
         else
         {
           this.setState({
           
-            results: result.results,
+            results: result,
             success: true
           });
         }
       })
-    .then((res : any) => {
-      if (!res.ok) {
-        this.setState({results: res})
-        this.setState({success: "true"})
-      }
-      else {
-        this.setState({results: res})
-        this.setState({success: "true"})
-      }
-})
   }
-  public fetchNews(countryName: string)
+  public fetchNews(country: string)
   {
     const url = 'https://newsapi.org/v2/top-headlines?' +
-    'sources=bbc-news&' +
+    'country='+country+'&' +
     'apiKey=3ce0f3693907405c934104cfa0ba8ded';
-
-    fetch(url, {method: 'GET'}).then((response: any) =>
-    {
-      this.setState({success: true});
-      this.setState({results: response});
-    })
+    
+    fetch(url, {
+      headers: {
+        'Content-Type': 'text/plain',
+      },
+      method: 'GET'
+    }).then(res => res.json())
+    .then(
+      (result) => {
+        if(!result.ok)
+        {
+          this.setState({
+            results: result,
+            success:true
+          });
+        }
+        else
+        {
+          this.setState({
+            results: result,
+            success: true
+          });
+        }
+      })
   }
-  /*
+
+  public doesSomething()
+  {
+    // This function takes the JSON object and formats it into a Card container.
+    // Since there is more than one article, we use a map() function to map each article to a container
+    // List of friend objects
+    
+    const keys = ["articles", "source", "id", "name", "author", "title", "description", "url", "urlToImage", "publishedAt"];
+   
+    const articleList = this.state.results[keys[0]];
+    
+    const listCardFriends = articleList.map((article: any) =>
+      // publishedAt is the key
+      <Card className = 'card' key = {article[keys[9]].toString()}>
+        <CardHeader title = {article[keys[5]]} subheader = {article[keys[4]]}/ >
+
+        <CardActionArea href = {article[keys[7]]}>
+          <CardMedia className= "pic" image= {article[keys[8]]} title="url"/>
+
+          <CardContent>
+            <Typography component = "p" variant="headline">
+              {
+                article[keys[6]] === null ? "No description available" : article[keys[6]]
+              }
+            </Typography>
+            
+          </CardContent>
+        </CardActionArea>
+        <CardActions>
+          <Button variant="contained" color="primary" href = {article[keys[7]]}>
+            Learn More
+            </Button>
+          </CardActions>
+      </Card>
+    );
+    return listCardFriends;
+    
+  }
+
+
   public render() {
+    // () => this.func() allows parameters to be passed in by using a arrow function. It calls arrow function which calls the function with
+    // parameters
     if(this.state.success === false)
     {
       return (
         <div className="App">
           <header className="App-header">
-            
-            <h1 className="App-title">Welcome to Alan's News for MSA</h1>
+            <h1> News </h1>
           </header>
-          <h1> News {this.state.success}</h1>
+          <h2> Powered by NewsAPI.org </h2>
           
-          <ButtonToolbar>
-            <Button bsStyle="primary" onClick = {this.LiterallyNothing} > Click Me </Button> 
-          </ButtonToolbar>;
-
-          {
-            this.state.results === "" ?   <Loader type="TailSpin" color="#00BFFF" height={80} width={80}/>:  <p>{this.state.results}</p>
-          }
+          <div className = "Button-drawer">
+          <Typography component = "p" variant="headline">
+            Please choose a Country to get Top Headlines from
+          </Typography>
+            <Button variant="outlined"  color="primary" onClick = {() => this.fetchNews("us")} > American News </Button>
+            <Button variant="outlined"  color="primary" onClick = {() => this.fetchNews("br")} > British News </Button>  
+            <Button variant="outlined"  color="primary" onClick = {() => this.fetchNews("nz")} > New Zealand News </Button>  
+          </div>
           
         </div>
       );
     }
     else{
       return (
+
         <div className="App">
           <header className="App-header">
             
-            <h1 className="App-title">SDFSDFSDF</h1>
+          <h1> News</h1>
           </header>
-          <h1> News {this.state.success}</h1>
+          <h2> Powered by NewsAPI.org {this.state.success} </h2>
           
-          <ButtonToolbar>
-            <Button bsStyle="primary" onClick = {this.LiterallyNothing} > Click sdfsdfsdf </Button> 
-          </ButtonToolbar>
-
+         
+          <div className = "Button-drawer">
+            <Button variant="outlined"  color="primary" onClick = {() => this.fetchNews("us")} > American News </Button>
+            <Button variant="outlined"  color="primary" onClick = {() => this.fetchNews("br")} > British News </Button>  
+            <Button variant="outlined"  color="primary" onClick = {() => this.fetchNews("nz")} > New Zealand News </Button>    
+          </div> 
+         
+          <Grid container = {true} justify = "center">
           {
-            this.state.results === "" ?   <Loader type="TailSpin" color="#00BFFF" height={80} width={80}/>:  <p>{JSON.stringify(this.state.results)}</p>
+            
+            this.state.results === "" ?   <LinearProgress />:  <this.doesSomething />
+           
           }
-          
+          </Grid>
         </div>
       )
     }
-  }*/
-  
-  public render() {
-    return(
-      <Grid container className="Wrapper" spacing = {16}>
-        <Grid  item xs={12}>
-          <h1 className="App-title">Welcome to Alan's News for MSA</h1>
-        </Grid>
-      </Grid>
-    );
   }
-}
+  }
+  
 
 
 
